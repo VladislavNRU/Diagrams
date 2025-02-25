@@ -1,0 +1,36 @@
+@startuml
+left to right direction
+actor HR as hr
+actor Менеджер as menager
+actor Кандидат as condidate
+actor Компания as company
+usecase (Регистрация кандидата) as reg_c
+usecase (Регистрация компании) as reg_com
+usecase (Регистрация сотрудников) as reg_e
+usecase (Выбор компании) as ch_com
+usecase (Сделать расклад) as mk_lay
+usecase (Выбор кандидата) as mk_c
+usecase (Список компаний) as list_com
+usecase (Список кандидатов) as list_c
+usecase (Добавить в избранное) as add_fav
+usecase (Посмотреть расклад) as show_lay
+usecase (Посмотреть результат) as show_res
+usecase (Список сотрудников) as list_e
+menager --> reg_e
+menager --> reg_c
+company --|> hr
+menager --|> hr
+menager --> reg_com
+condidate --> reg_c
+reg_e ..> list_e : <<include>>
+hr --> mk_lay
+mk_lay ..> ch_com : <<include>>
+mk_lay ..> mk_c   : <<include>>
+ch_com <.. list_com : <<extend>>
+mk_c <.. list_c : <<extend>>
+ch_com <.. add_fav : <<extend>>
+menager <.. show_res : <<extend>>
+menager <.. show_lay : <<extend>>
+hr <.. show_lay : <<extend>>
+hr <.. show_res : <<extend>>
+@endumlO

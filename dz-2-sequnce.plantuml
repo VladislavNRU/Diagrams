@@ -1,0 +1,26 @@
+@startuml
+
+actor Клиент as client
+participant "Сайт" as web
+participant "Система обработки заявок" as soz 
+participant "Скоринг" as score
+participant "Печать" as print
+participant "Доставка" as delivery
+ref over web, soz, score, print, delivery : Аутентификация пользователя
+client -> web: Заказ карты
+web ->soz : HTTP POST api/v1/tickets
+soz -> score : HTTP POST api/v1/scores
+alt Рейтинг подходит
+  score --> soz : HTTP response (score)
+  soz -> print : Начать печать
+  print -> delivery : Оформить доставку
+  delivery --> client : Доставка карты
+else Рейтинг мал
+  score --> soz : HTTP response (score)
+  soz --> web : Рейтинг недостаточен
+else Клиент не найден
+  score --> soz : HTTP response (ClientNotFound)
+  soz --> web : Клиент не был найден
+end
+
+@enduml
